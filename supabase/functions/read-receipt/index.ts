@@ -18,6 +18,10 @@ const geminiUrl = (model: string) =>
   `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent`;
 // Per attempt. Gemini sometimes holds a request for minutes when it is overloaded.
 const TIMEOUT_MS = 25_000;
+// A spoken sentence normally reads in 2–4 s. When Gemini is that slow it is overloaded, and the
+// app's keyword parser is a better answer than another long wait, so text gives up much sooner.
+const TEXT_TIMEOUT_MS = 8_000;
+const TEXT_DEADLINE_MS = 12_000;
 // AI reads (photos and spoken text together) one user can make per UTC day.
 const DAILY_LIMIT = 30;
 
@@ -156,13 +160,18 @@ Deno.serve(
 
     try {
       let res: Response | null = null;
+      const deadline = text ? Date.now() + TEXT_DEADLINE_MS : Infinity;
       for (const model of MODELS) {
+        const left = deadline - Date.now();
+        if (left <= 0) {
+          break;
+        }
         try {
           res = await fetch(geminiUrl(model), {
             method: 'POST',
             headers: {'Content-Type': 'application/json', 'x-goog-api-key': API_KEY},
             body: request,
-            signal: AbortSignal.timeout(TIMEOUT_MS),
+            signal: AbortSignal.timeout(text ? Math.min(TEXT_TIMEOUT_MS, left) : TIMEOUT_MS),
           });
         } catch (error) {
           console.error('read-receipt:', model, 'timed out or failed', error);
