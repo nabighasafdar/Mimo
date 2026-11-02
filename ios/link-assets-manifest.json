@@ -2,6 +2,30 @@
   "migIndex": 1,
   "data": [
     {
+      "path": "assets/fonts/Caveat-Bold.ttf",
+      "sha1": "2255810956a31538cb93411d06bf9ad09728ccee"
+    },
+    {
+      "path": "assets/fonts/Caveat-SemiBold.ttf",
+      "sha1": "d78d03924d8b991f982bbb549932ebc14b06d951"
+    },
+    {
+      "path": "assets/fonts/Fraunces-Bold.ttf",
+      "sha1": "8a10e5655a7d9191863dcfcfa099935187e1df5f"
+    },
+    {
+      "path": "assets/fonts/Fraunces-MediumItalic.ttf",
+      "sha1": "4f2d1dfeb69c1ac1d239342e94289982ec6ba338"
+    },
+    {
+      "path": "assets/fonts/Fraunces-SemiBold.ttf",
+      "sha1": "57b26c2968806d28c339b8ccccb51ffc1a0be29d"
+    },
+    {
+      "path": "assets/fonts/Nunito-Black.ttf",
+      "sha1": "b94292d68b0019539f1d925ff4f72607b83f74fa"
+    },
+    {
       "path": "assets/fonts/Nunito-Bold.ttf",
       "sha1": "e50cf9134308e37008cbd39da1dc637aef022641"
     },

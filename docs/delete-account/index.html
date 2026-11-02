@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Delete Account</title>
+<link rel="stylesheet" href="../assets/style.css">
+<link rel="icon" href="../assets/mimo.png">
+</head>
+<body>
+<main>
+<header><a href="../"><img src="../assets/mimo.png" alt=""><span>Mimo</span></a></header>
+<h1>Delete your Mimo account</h1>
+<p>This permanently deletes your account, profile, expenses, goals and usage record. It cannot be undone.</p>
+<p><strong>Easiest way:</strong> open Mimo, go to <strong>Me</strong> and tap <strong>Delete account</strong>. This also works if you joined with Google.</p>
+<p>No longer have the app? If you joined with email, log in here. If you joined with Google and can't open the app, ask on <a href="https://github.com/nabighasafdar/Mimo/issues">GitHub Issues</a>, without posting personal details.</p>
+<form id="form" class="card">
+  <label>Email
+    <input id="email" type="email" autocomplete="email" required>
+  </label>
+  <label>Password
+    <input id="password" type="password" autocomplete="current-password" required>
+  </label>
+  <label class="check">
+    <input id="sure" type="checkbox" required>
+    I understand this deletes everything for good.
+  </label>
+  <p id="error" class="error" role="alert" hidden></p>
+  <button id="delete" class="danger" type="submit">Delete my account</button>
+</form>
+<p id="done" class="ok" role="status" hidden>Your account and data are deleted.</p>
+<script src="../assets/supabase.js"></script>
+<script src="../assets/mimo.js"></script>
+<script>
+  document.getElementById('form').addEventListener('submit', async e => {
+    e.preventDefault();
+    const button = document.getElementById('delete');
+    button.disabled = true;
+    show('error', null);
+    const {error: loginError} = await mimo.auth.signInWithPassword({
+      email: document.getElementById('email').value.trim(),
+      password: document.getElementById('password').value,
+    });
+    const {error} = loginError ? {error: loginError} : await mimo.rpc('delete_my_account');
+    button.disabled = false;
+    if (error) {
+      return show('error', loginError ? 'That email and password do not match.' : 'Could not delete the account. Try again.');
+    }
+    await mimo.auth.signOut({scope: 'local'});
+    document.getElementById('form').hidden = true;
+    document.getElementById('done').hidden = false;
+  });
+</script>
+<footer class="muted"><a href="../privacy/">Privacy policy</a> · <a href="../delete-account/">Delete account</a></footer>
+</main>
+</body>
+</html>
