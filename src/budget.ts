@@ -21,6 +21,15 @@ export function budgetStatus(spent: number, limit: number): {pct: number; level:
   return {pct, level: spent > limit ? 'over' : spent >= limit * WARN_AT ? 'warn' : 'ok'};
 }
 
+/** Amounts are stored as numeric(14, 2), so they have to stay below this. */
+export const MAX_AMOUNT = 1e12;
+
+/** What was typed as a number with cents kept, or 0 if it isn't a positive number. */
+export const toAmount = (text: string) => {
+  const n = Number(text.replace(/,/g, '').trim());
+  return Number.isFinite(n) && n > 0 ? n : 0;
+};
+
 /** Text colours per level (readable on cream). */
 export const LEVEL_COLOR: Record<Level, string> = {
   none: '#735A49',
@@ -77,6 +86,15 @@ export const sameMonth = (iso: string, month: Date) => {
   const d = new Date(iso);
   return d.getFullYear() === month.getFullYear() && d.getMonth() === month.getMonth();
 };
+
+/**
+ * When a receipt dated "YYYY-MM-DD" was paid (ISO 8601). Undefined if the date is unreadable or
+ * still to come (a misread year, or a bill's due date), so the item counts as spent today.
+ */
+export function receiptDate(day: string, now = new Date()): string | undefined {
+  const d = new Date(`${day}T12:00:00`);
+  return Number.isNaN(d.getTime()) || d > now ? undefined : d.toISOString();
+}
 
 /** The first day of the month `offset` months from now (0 = this month, -1 = last). */
 export function monthStart(offset = 0, from = new Date()): Date {

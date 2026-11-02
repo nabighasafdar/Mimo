@@ -1,135 +1,73 @@
-# Voice Expense Tracker
+# Mimo
 
-A simple, voice-first expense tracker that lets users log spending naturally without typing. The app converts spoken expense details into structured transactions, then confirms them before saving.
+A voice-first budgeting app for Android. Say what you spent, scan a receipt or type it, and Mimo sorts it into your budget, tracks your savings goal and warns you before you overspend.
 
-## Problem
+## Features
 
-Manual expense tracking fails because typing every transaction is too much friction. People will start strong, then stop logging expenses when the process feels slow or annoying.
+- **Add spending** by voice, receipt photo or typing. Voice and receipts are read by AI, and you confirm before anything is saved.
+- **Budget:** monthly income minus your savings goal, with alerts at 80% and when you overspend.
+- **Stats** by week, month and year, with every item listed so it can be edited or deleted.
+- **Savings goals** in a bucket list.
+- **Offline:** every change is saved on the phone first and sent when there is internet. Reading receipts and speech still need a connection.
+- **Accounts:** email and password or Google sign-in, with full account deletion in the app.
 
-## Solution
+## Tech stack
 
-Let users speak their expense in natural language and turn that speech into a structured transaction automatically:
+| Part | Tool |
+|---|---|
+| App | React Native 0.87 with TypeScript |
+| Navigation | React Navigation native stack |
+| Backend | Supabase: Postgres, Auth, Edge Functions |
+| AI | Google Gemini, called from the `read-receipt` Edge Function |
+| Speech | Android `SpeechRecognizer`, wrapped in `SpeechModule.kt` |
+| Website | Static pages in `docs/`, served by GitHub Pages |
 
-- amount
-- category
-- merchant/item note
-- date
+Android comes first. iOS is not set up: CocoaPods aren't installed and voice input is Android-only.
 
-Then show a confirmation screen so users can verify and edit the parsed result before saving.
-
-## Core User Flow
-
-1. User taps a mic button (or long-presses a floating action button).
-2. User speaks the expense naturally.
-3. Speech-to-text converts audio into raw text.
-4. An LLM extracts structured fields from the transcript.
-5. The app shows a confirmation card with editable fields.
-6. The transaction saves locally when the user confirms.
-7. Budget totals update instantly.
-
-## MVP Feature Set
-
-- Voice input → transaction: press a mic button, say something like “I bought ice cream for 500,” and AI extracts amount/category/note
-- Manual entry as a fallback/edit path
-- Currency selection: choose a base currency (e.g. PKR, USD)
-- Monthly budget: set a total and view spent vs remaining
-- Yearly budget: aggregated annual view
-- Category breakdown (food, transport, bills, etc.)
-- Transaction history list with edit/delete
-- Simple local persistence for offline use
-
-## Post-MVP Features
-
-- Yearly/monthly trend charts
-- Recurring expenses auto-logged
-- Budget alerts (e.g. “You’ve used 80% of your food budget”)
-- Live currency conversion for different spoken currencies
-- Export to CSV/PDF
-- Cloud sync + multi-device support
-- Bank SMS/notification parsing as another auto-entry source
-- Voice queries such as “How much did I spend on food this month?”
-
-## Recommended Tech Stack
-
-- App framework: Flutter
-- State management: Riverpod or Bloc
-- Local database: Drift (SQLite) or Isar
-- Speech-to-text: `speech_to_text` package or cloud STT API
-- AI extraction: LLM API call with strict JSON-only prompt
-- Backend (optional later): Firebase or a lightweight Node/Express + Postgres API
-- Charts: `fl_chart`
-
-## Data Model
+## Project layout
 
 ```text
-Transaction
-- id
-- amount
-- currency
-- category
-- note (raw or cleaned)
-- rawTranscript
-- date
-- createdAt
-
-Category
-- id
-- name
-- icon
-- monthlyLimit (optional)
-
-Budget
-- id
-- period (month/year)
-- periodValue (e.g. "2026-08" or "2026")
-- totalLimit
-- currency
-
-UserSettings
-- baseCurrency (e.g. PKR, USD)
+src/store.tsx      App state, loading, offline copy
+src/outbox.ts      Queue that sends changes to the database
+src/db.ts          Reads from Supabase
+src/budget.ts      Budget and date calculations
+src/voiceParse.ts  On-device parser, used when the AI is unavailable
+src/config.ts      Public settings
+src/screens/       One file per screen
+supabase/          Database schema and Edge Function
+docs/              Website: privacy policy, password reset, account deletion
+__tests__/         Jest tests
 ```
 
-## AI Extraction Design
+## Run it
 
-This is the riskiest technical step, so keep it simple and reliable:
+You need Node 22.11 or newer, Android Studio and a connected Android phone with USB debugging on.
 
-- Use a single small LLM call with a system prompt that returns only JSON.
-- Validate against a fixed category list so the model cannot invent categories.
-- Include the user’s selected currency so bare numbers are interpreted correctly.
-- Always show a confirmation/edit screen instead of auto-saving.
-- Store the raw transcript for debugging and future prompt tuning.
-- If extraction is not confident, fall back to a manual form pre-filled with what was understood.
-
-### Example JSON output
-
-```json
-{
-  "amount": 500,
-  "currency": "PKR",
-  "category": "Food",
-  "note": "ice cream",
-  "confidence": 0.84
-}
+```bash
+npm install
+npm start          # keep this running
+npm run android    # in a second terminal
+npm test           # run before each release
 ```
 
-## Suggested Build Order
+## Backend setup
 
-1. Phase 1 — Skeleton: Flutter project, local DB schema, manual transaction entry, category list, monthly budget screen.
-2. Phase 2 — Voice input: integrate STT, wire mic button, show raw transcript.
-3. Phase 3 — AI extraction: send transcript to LLM, parse JSON, show confirmation card, save on confirm.
-4. Phase 4 — Budgets & insights: monthly/yearly totals, remaining budget, category breakdown, basic charts.
-5. Phase 5 — Polish: edit/delete flows, empty states, error handling, offline resilience.
-6. Phase 6 — Optional backend: add sync/auth once the local version works end-to-end.
+1. Run `supabase/schema.sql` in the Supabase SQL Editor. It is safe to re-run.
+2. Put your Gemini key in `supabase/functions/.env` as `GEMINI_API_KEY=...`. This file is git-ignored.
+3. Set the secret and deploy the function:
 
-## Key Risks
+```bash
+npx supabase secrets set --env-file supabase/functions/.env --project-ref ybvuqihcidyhufrqicgb
+npx supabase functions deploy read-receipt --no-verify-jwt --project-ref ybvuqihcidyhufrqicgb
+```
 
-- STT accuracy for accented or noisy speech — test early with real voice samples.
-- Currency/number parsing for values such as “500,” “five hundred,” or “5k.”
-- Cost growth from AI calls if usage scales — keep extraction calls minimal and cheap.
-- User trust — never auto-save parsed entries without confirmation.
+4. In Supabase, go to Authentication → URL Configuration and add `https://nabighasafdar.github.io/Mimo/reset-password` to the redirect URLs.
 
-## Notes
+## Release build
 
-- Start with local-only support and keep the backend optional until the core voice entry flow is stable.
-- The confirmation step is critical for trust and error recovery.
-- Logging transcripts and parsed results will make prompt iteration much easier.
+Signing needs `android/keystore.properties` and `android/app/mimo-release.keystore`. Both are git-ignored, so back them up somewhere safe: an app can't be updated on Google Play without its signing key.
+
+```bash
+cd android && ./gradlew assembleRelease
+adb install -r app/build/outputs/apk/release/app-release.apk
+```

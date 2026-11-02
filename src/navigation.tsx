@@ -9,6 +9,7 @@ import {sameMonth, spendingAlert} from './budget';
 import {NewExpense, StoreProvider, useMoney, useStore} from './store';
 import AgeScreen from './screens/AgeScreen';
 import CurrencyScreen from './screens/CurrencyScreen';
+import ExpenseScreen from './screens/ExpenseScreen';
 import ForgotPasswordScreen from './screens/ForgotPasswordScreen';
 import GoalsScreen from './screens/GoalsScreen';
 import HomeScreen from './screens/HomeScreen';
@@ -40,10 +41,12 @@ export type RootStackParamList = {
   Goals: undefined;
   Me: undefined;
   Savings: undefined;
+  /** With an `id` this edits that saved expense; without one it adds a new one. */
+  Expense: {id?: string} | undefined;
   ScanReceipt: undefined;
   AIResult: {receipt: Receipt};
   Voice: undefined;
-  VoiceResult: {transcript: string; items: ParsedExpense[]};
+  VoiceResult: {transcript: string; items: ParsedExpense[]; guessed?: boolean};
 };
 
 type Props<T extends keyof RootStackParamList> = NativeStackScreenProps<RootStackParamList, T>;
@@ -137,8 +140,9 @@ function Currency({navigation, route}: Props<'Currency'>) {
 function useEnterApp(navigation: Props<'SignUp' | 'Login'>['navigation']) {
   const {enter} = useStore();
   return async () => {
-    await enter();
-    navigation.reset({index: 0, routes: [{name: 'Home'}]});
+    if (await enter()) {
+      navigation.reset({index: 0, routes: [{name: 'Home'}]});
+    }
   };
 }
 
@@ -177,7 +181,36 @@ function Home({navigation}: Props<'Home'>) {
   return (
     <HomeScreen
       onTellMimo={() => navigation.navigate('Voice')}
+      onTypeExpense={() => navigation.navigate('Expense')}
+      onEditExpense={id => navigation.navigate('Expense', {id})}
       onEditSavings={() => navigation.navigate('Savings')}
+    />
+  );
+}
+
+function Expense({navigation, route}: Props<'Expense'>) {
+  const {expenses, updateExpense, deleteExpense, today} = useStore();
+  const add = useAddExpenses(navigation);
+  const id = route.params?.id;
+  return (
+    <ExpenseScreen
+      expense={expenses.find(e => e.id === id)}
+      today={today}
+      onBack={() => navigation.goBack()}
+      onSave={expense => {
+        if (id) {
+          updateExpense(id, expense);
+          navigation.goBack();
+        } else {
+          add([expense]);
+        }
+      }}
+      onDelete={() => {
+        if (id) {
+          deleteExpense(id);
+          navigation.goBack();
+        }
+      }}
     />
   );
 }
@@ -188,7 +221,7 @@ function Savings({navigation}: Props<'Savings'>) {
 
 // Saves new expenses, returns to Home, and warns when they push this month's spending past
 // 80% of what the user can spend, or into their savings.
-function useAddExpenses(navigation: Props<'AIResult' | 'VoiceResult'>['navigation']) {
+function useAddExpenses(navigation: Props<'AIResult' | 'VoiceResult' | 'Expense'>['navigation']) {
   const {addExpenses, spent, budget, savingsGoal, today, prefs} = useStore();
   const money = useMoney();
   return (items: NewExpense[]) => {
@@ -205,7 +238,8 @@ function useAddExpenses(navigation: Props<'AIResult' | 'VoiceResult'>['navigatio
 }
 
 function Me({navigation}: Props<'Me'>) {
-  const {reset} = useStore();
+  const {reset, deleteAccount} = useStore();
+  const toWelcome = () => navigation.reset({index: 0, routes: [{name: 'Welcome'}]});
   return (
     <MeScreen
       onEditPersonal={() => navigation.navigate('Name', {edit: true})}
@@ -215,7 +249,15 @@ function Me({navigation}: Props<'Me'>) {
       onLogout={async () => {
         signOutOfGoogle();
         await reset();
-        navigation.reset({index: 0, routes: [{name: 'Welcome'}]});
+        toWelcome();
+      }}
+      onDeleteAccount={async () => {
+        const deleted = await deleteAccount();
+        if (deleted) {
+          signOutOfGoogle();
+          toWelcome();
+        }
+        return deleted;
       }}
     />
   );
@@ -244,16 +286,19 @@ function Voice({navigation}: Props<'Voice'>) {
       onDone={async transcript => {
         // The AI names each item and picks its category; offline, fall back to keywords.
         let items: ParsedExpense[];
+        let guessed = false;
         try {
           items = (await readSpoken(transcript)).map(i => ({
             amount: Math.round(i.amount),
             category: i.category,
             note: i.name,
           }));
-        } catch {
+        } catch (e) {
+          console.warn('Mimo: AI read failed, using keywords:', e);
           items = parseExpenses(transcript);
+          guessed = true;
         }
-        navigation.navigate('VoiceResult', {transcript, items});
+        navigation.navigate('VoiceResult', {transcript, items, guessed});
       }}
     />
   );
@@ -265,6 +310,7 @@ function VoiceResult({navigation, route}: Props<'VoiceResult'>) {
     <VoiceResultScreen
       transcript={route.params.transcript}
       items={route.params.items}
+      guessed={route.params.guessed}
       onBack={() => navigation.goBack()}
       onSayAgain={() => navigation.goBack()}
       onAdd={add}
@@ -292,6 +338,7 @@ function Routes() {
         <Stack.Screen name="Goals" component={GoalsScreen} options={{animation: 'none'}} />
         <Stack.Screen name="Me" component={Me} options={{animation: 'none'}} />
         <Stack.Screen name="Savings" component={Savings} />
+        <Stack.Screen name="Expense" component={Expense} />
         <Stack.Screen name="ScanReceipt" component={ScanReceipt} />
         <Stack.Screen name="AIResult" component={AIResult} />
         <Stack.Screen name="Voice" component={Voice} />

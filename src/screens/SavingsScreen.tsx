@@ -22,30 +22,19 @@ export default function SavingsScreen({onBack, onSaved}: Props) {
   const {income, savingsGoal, setSavingsGoal, spent, profile} = useStore();
   const money = useMoney();
   const [draft, setDraft] = useState(savingsGoal ? formatAmount(savingsGoal) : '');
-  const [saving, setSaving] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
   const goal = parseInt(draft.replace(/\D/g, ''), 10) || 0;
   const tooMuch = income > 0 && goal > income;
   const allowance = spendable(income, goal);
 
-  const save = async () => {
-    if (saving) {
-      return;
-    }
+  const save = () => {
     if (tooMuch) {
       setError(`That's more than your income of ${money(income)}.`);
       return;
     }
-    setSaving(true);
-    setError(null);
-    const ok = await setSavingsGoal(goal);
-    setSaving(false);
-    if (ok) {
-      onSaved?.();
-    } else {
-      setError("Couldn't save your goal. Check your internet and try again.");
-    }
+    setSavingsGoal(goal);
+    onSaved?.();
   };
 
   const bunny = income
@@ -128,7 +117,7 @@ export default function SavingsScreen({onBack, onSaved}: Props) {
           {error && <Text style={styles.error}>{error}</Text>}
         </View>
 
-        <PrimaryButton label={saving ? 'Saving…' : 'Save my goal'} onPress={save} disabled={saving} />
+        <PrimaryButton label="Save my goal" onPress={save} />
       </KeyboardScreen>
     </View>
   );

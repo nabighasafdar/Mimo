@@ -19,6 +19,8 @@ type Props = {
   onEditCurrency?: () => void;
   onEditSavings?: () => void;
   onLogout?: () => void;
+  /** Resolves false if the account could not be deleted. */
+  onDeleteAccount?: () => Promise<boolean>;
 };
 
 const icon = (children: React.ReactNode) => (
@@ -33,7 +35,9 @@ const compact = (n: number) => (n >= 1000 && n % 1000 === 0 ? `${n / 1000}k` : f
 function showHelp() {
   const text =
     'Add spending: tap the mic on Home and say it, like “450 on lunch”, or scan a receipt with the camera button.\n\n' +
-    'Delete an item: press and hold it in the Home list.\n\n' +
+    'Type an expense: tap “or type it instead” on Home.\n\n' +
+    'Fix or delete an item: tap it on Home or in Stats. You can also press and hold it on Home to delete it.\n\n' +
+    'No internet: keep going. Mimo saves on your phone and catches up when you are back online. Reading receipts and speech still needs internet.\n\n' +
     'Change your savings goal: tap “saving” on Home, or Monthly savings here.\n\n' +
     'AI reads are limited to 30 a day. After that, voice entries are matched by keywords and receipts can be scanned again tomorrow.';
   Alert.alert(
@@ -54,9 +58,25 @@ export default function MeScreen({
   onEditCurrency,
   onEditSavings,
   onLogout,
+  onDeleteAccount,
 }: Props) {
   const {profile, savingsGoal, goals, prefs, setPrefs, memberSince} = useStore();
   const initial = (profile.name.trim()[0] ?? 'M').toUpperCase();
+
+  const deleteForGood = async () => {
+    if (!(await onDeleteAccount?.())) {
+      Alert.alert('Not deleted', "I couldn't delete your account. Check your internet and try again.");
+    }
+  };
+  const confirmDelete = () =>
+    Alert.alert(
+      'Delete your account?',
+      'This permanently deletes your account, expenses, goals and budget. It cannot be undone.',
+      [
+        {text: 'Keep my account', style: 'cancel'},
+        {text: 'Delete everything', style: 'destructive', onPress: deleteForGood},
+      ],
+    );
 
   return (
     <View style={styles.root}>
@@ -179,6 +199,9 @@ export default function MeScreen({
 
           <Pressable onPress={onLogout} hitSlop={10} style={styles.logout}>
             <Text style={styles.logoutText}>Log out</Text>
+          </Pressable>
+          <Pressable onPress={confirmDelete} hitSlop={10} style={styles.deleteAccount}>
+            <Text style={styles.deleteAccountText}>Delete account</Text>
           </Pressable>
         </ScrollView>
 
@@ -308,5 +331,7 @@ const styles = StyleSheet.create({
   knobOn: {left: 21},
   logout: {alignSelf: 'center', marginTop: 18, padding: 6},
   logoutText: {color: colors.accentText, fontFamily: fonts.handBold, fontSize: 22},
+  deleteAccount: {alignSelf: 'center', marginTop: 6, padding: 6},
+  deleteAccountText: {color: '#9A3524', fontFamily: fonts.bold, fontSize: 13},
   nav: {paddingBottom: 12},
 });

@@ -128,6 +128,26 @@ create policy "own goals" on public.goals
   using ((select auth.uid()) = user_id)
   with check ((select auth.uid()) = user_id);
 
+-- --------------------------------------------------------------- delete account
+-- Lets someone delete their own account from the app. Removing the auth.users row takes the
+-- profile, expenses, goals and AI usage with it, because they all reference it on delete cascade.
+create or replace function public.delete_my_account()
+returns void
+language plpgsql
+security definer
+set search_path = ''
+as $$
+begin
+  if auth.uid() is null then
+    raise exception 'not signed in';
+  end if;
+  delete from auth.users where id = auth.uid();
+end;
+$$;
+
+revoke execute on function public.delete_my_account() from public, anon;
+grant execute on function public.delete_my_account() to authenticated;
+
 -- --------------------------------------------------------------- AI daily limit
 -- One row per user per UTC day. Only consume_ai_quota touches it, so the read-receipt function
 -- can stop one account from running up the Gemini bill. RLS on with no policies: no direct access.

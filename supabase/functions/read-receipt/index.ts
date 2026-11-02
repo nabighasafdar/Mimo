@@ -12,8 +12,8 @@ const CATEGORIES = ['Food', 'Transport', 'Shopping', 'Bills'] as const;
 const MEDIA_TYPES = ['image/jpeg', 'image/png', 'image/webp', 'image/gif'] as const;
 type MediaType = (typeof MEDIA_TYPES)[number];
 
-// Tried in order: when the first is overloaded or slow, the next one reads the receipt.
-const MODELS = ['gemini-3.8-flash', 'gemini-3.5-flash', 'gemini-3.5-flash-lite'];
+// Tried in order: when the first is overloaded, slow or retired, the next one reads the receipt.
+const MODELS = ['gemini-3.5-flash', 'gemini-3.5-flash-lite', 'gemini-3.8-flash'];
 const geminiUrl = (model: string) =>
   `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent`;
 // Per attempt. Gemini sometimes holds a request for minutes when it is overloaded.
@@ -169,8 +169,8 @@ Deno.serve(
           res = null;
           continue;
         }
-        // Busy or down: try the next model. Anything else is the answer.
-        if (![429, 500, 503, 504].includes(res.status)) {
+        // Retired, busy or down: try the next model. Anything else is the answer.
+        if (![404, 429, 500, 503, 504].includes(res.status)) {
           break;
         }
         console.error('read-receipt:', model, res.status, await res.text());

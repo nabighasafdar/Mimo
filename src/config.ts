@@ -6,7 +6,7 @@ export const GOOGLE_WEB_CLIENT_ID = '';
 
 // The deployed landing page, no trailing slash (e.g. 'https://mimo-app.vercel.app'). Password
 // reset emails link to its /reset-password page and Me links to its /privacy page.
-export const WEBSITE_URL = '';
+export const WEBSITE_URL = 'https://nabighasafdar.github.io/Mimo';
 
 // Where Help & support sends people. Leave empty to hide the "Email us" button.
 export const SUPPORT_EMAIL = '';

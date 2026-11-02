@@ -16,6 +16,8 @@ import {colors, fonts, spacing, textColors} from '../theme';
 type Props = {
   transcript: string;
   items: ParsedExpense[];
+  /** The AI couldn't be reached, so the items came from the on-device keyword parser. */
+  guessed?: boolean;
   onBack?: () => void;
   onSayAgain?: () => void;
   onAdd?: (items: NewExpense[]) => void;
@@ -27,7 +29,14 @@ const nextCategory = (c: CategoryKey) =>
   CATEGORIES[(CATEGORIES.findIndex(x => x.key === c) + 1) % CATEGORIES.length].key;
 
 // Figma: 13 Voice result. Fields are editable; tap the category chip to cycle it.
-export default function VoiceResultScreen({transcript, items, onBack, onSayAgain, onAdd}: Props) {
+export default function VoiceResultScreen({
+  transcript,
+  items,
+  guessed,
+  onBack,
+  onSayAgain,
+  onAdd,
+}: Props) {
   const money = useMoney();
   const [drafts, setDrafts] = useState<Draft[]>(() =>
     items.map(i => ({amount: formatAmount(i.amount), category: i.category, note: i.note})),
@@ -84,7 +93,11 @@ export default function VoiceResultScreen({transcript, items, onBack, onSayAgain
           </GlassCard>
 
           {drafts.length > 0 && (
-            <Text style={styles.ai}>Filled in by AI. Tap any field to change it.</Text>
+            <Text style={styles.ai}>
+              {guessed
+                ? "AI isn't available right now, so I matched keywords. Please check these."
+                : 'Filled in by AI. Tap any field to change it.'}
+            </Text>
           )}
 
           {drafts.map((d, i) => {

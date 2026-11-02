@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Reset Password</title>
+<link rel="stylesheet" href="../assets/style.css">
+<link rel="icon" href="../assets/mimo.png">
+</head>
+<body>
+<main>
+<header><a href="../"><img src="../assets/mimo.png" alt=""><span>Mimo</span></a></header>
+<h1>Choose a new password</h1>
+<p id="checking" class="muted">Checking your reset link…</p>
+<p id="bad-link" class="error" hidden>This link has expired or was already used. Open Mimo, tap Forgot password and request a new one.</p>
+<form id="form" class="card" hidden>
+  <label>New password
+    <input id="password" type="password" autocomplete="new-password" minlength="6" required>
+  </label>
+  <label>Type it again
+    <input id="again" type="password" autocomplete="new-password" minlength="6" required>
+  </label>
+  <p id="error" class="error" role="alert" hidden></p>
+  <button id="save" type="submit">Save new password</button>
+</form>
+<p id="done" class="ok" role="status" hidden>Your password is changed. Go back to Mimo and log in.</p>
+<script src="../assets/supabase.js"></script>
+<script src="../assets/mimo.js"></script>
+<script>
+  const reveal = hasSession => {
+    document.getElementById('checking').hidden = true;
+    document.getElementById(hasSession ? 'form' : 'bad-link').hidden = false;
+  };
+  mimo.auth.getSession().then(({data}) => reveal(!!data.session));
+
+  document.getElementById('form').addEventListener('submit', async e => {
+    e.preventDefault();
+    const password = document.getElementById('password').value;
+    if (password !== document.getElementById('again').value) {
+      return show('error', 'Those passwords do not match.');
+    }
+    const button = document.getElementById('save');
+    button.disabled = true;
+    show('error', null);
+    const {error} = await mimo.auth.updateUser({password});
+    button.disabled = false;
+    if (error) {
+      return show('error', error.message);
+    }
+    await mimo.auth.signOut({scope: 'local'});
+    document.getElementById('form').hidden = true;
+    document.getElementById('done').hidden = false;
+  });
+</script>
+<footer class="muted"><a href="../privacy/">Privacy policy</a> · <a href="../delete-account/">Delete account</a></footer>
+</main>
+</body>
+</html>

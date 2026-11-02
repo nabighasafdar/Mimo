@@ -14,6 +14,8 @@ import {colors, fonts, spacing, textColors} from '../theme';
 
 type Props = {
   onTellMimo?: () => void;
+  onTypeExpense?: () => void;
+  onEditExpense?: (id: string) => void;
   onEditSavings?: () => void;
 };
 
@@ -24,8 +26,18 @@ const greeting = (now: Date) => {
 
 // Design: 07 Home. This month's spending, item by item, against what the user can spend once
 // their savings goal is set aside.
-export default function HomeScreen({onTellMimo, onEditSavings}: Props) {
-  const {profile, budget, savingsGoal, spent, expenses, deleteExpense, today: now} = useStore();
+export default function HomeScreen({onTellMimo, onTypeExpense, onEditExpense, onEditSavings}: Props) {
+  const {
+    profile,
+    budget,
+    savingsGoal,
+    spent,
+    expenses,
+    deleteExpense,
+    pending,
+    offline,
+    today: now,
+  } = useStore();
   const money = useMoney();
   const month = monthName(now);
   const over = budget > 0 && spent > budget;
@@ -61,6 +73,16 @@ export default function HomeScreen({onTellMimo, onEditSavings}: Props) {
               <Bunny width={36} height={77} style={styles.avatarBunny} />
             </View>
           </View>
+
+          {(pending > 0 || offline) && (
+            <Text style={styles.offline} accessibilityLiveRegion="polite">
+              {pending > 0
+                ? `${pending} ${pending === 1 ? 'change' : 'changes'} on this phone. I'll save ${
+                    pending === 1 ? 'it' : 'them'
+                  } when you're back online.`
+                : "You're offline. This is your last saved budget."}
+            </Text>
+          )}
 
           <View style={styles.heroWrap}>
             <View style={styles.burlapFrame}>
@@ -114,6 +136,9 @@ export default function HomeScreen({onTellMimo, onEditSavings}: Props) {
               </View>
             </GlassCard>
           </Pressable>
+          <Pressable onPress={onTypeExpense} hitSlop={8} style={styles.typeIt}>
+            <Text style={styles.typeItText}>or type it instead</Text>
+          </Pressable>
 
           {savingsGoal === 0 && (
             <Pressable onPress={onEditSavings} accessibilityLabel="Set a monthly savings goal">
@@ -149,9 +174,10 @@ export default function HomeScreen({onTellMimo, onEditSavings}: Props) {
             {items.map((e, i) => (
               <Pressable
                 key={e.id}
+                onPress={() => onEditExpense?.(e.id)}
                 onLongPress={() => confirmDelete(e.id, e.note)}
                 accessibilityLabel={`${e.note}, ${money(e.amount)}, ${shortDate(e.date)}`}
-                accessibilityHint="Long press to delete"
+                accessibilityHint="Tap to edit, long press to delete"
                 style={({pressed}) => [styles.lrow, styles.lbody, pressed && styles.pressed]}>
                 <DashLine />
                 <Text style={[styles.td, styles.colNo]}>{i + 1}</Text>
@@ -259,6 +285,14 @@ const styles = StyleSheet.create({
     paddingRight: 6,
   },
   voiceText: {flex: 1, color: colors.textSoft, fontFamily: fonts.hand, fontSize: 20},
+  typeIt: {marginTop: 8, alignSelf: 'center'},
+  typeItText: {
+    color: colors.accentText,
+    fontFamily: fonts.handBold,
+    fontSize: 19,
+    textDecorationLine: 'underline',
+  },
+  offline: {marginTop: 10, color: colors.accentText, fontFamily: fonts.bold, fontSize: 12.5},
   voiceMic: {
     width: 42,
     height: 42,

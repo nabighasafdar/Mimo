@@ -4,7 +4,7 @@ import {CategoryKey} from './categories';
 import {supabase} from './supabase';
 
 // Receipt photos are read by the `read-receipt` Edge Function (supabase/functions), which
-// holds the Anthropic key. The app only sends the photo and gets the items back.
+// holds the Gemini key. The app only sends the photo and gets the items back.
 
 export type ReceiptItem = {name: string; amount: number; category: CategoryKey};
 

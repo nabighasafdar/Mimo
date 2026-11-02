@@ -26,6 +26,13 @@ vendor/
 .metro-health-check*
 .expo/
 
+# Supabase CLI
+supabase/.temp/
+
+# API keys: never commit
+.env
+.env.*
+
 # Release signing: never commit
 keystore.properties
 mimo-release.keystore

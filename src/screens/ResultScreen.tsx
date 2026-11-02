@@ -8,6 +8,7 @@ import GlassCard from '../components/GlassCard';
 import PrimaryButton from '../components/PrimaryButton';
 import SecondaryButton from '../components/SecondaryButton';
 import {BackTitle} from './ScanScreen';
+import {receiptDate, toAmount} from '../budget';
 import {CATEGORIES, CategoryKey, categoryInfo} from '../categories';
 import {Receipt} from '../receipt';
 import {NewExpense, useMoney, useStore} from '../store';
@@ -16,12 +17,6 @@ import {colors, fonts, spacing, textColors} from '../theme';
 type Props = {receipt: Receipt; onBack?: () => void; onAdd?: (items: NewExpense[]) => void};
 
 type Draft = {name: string; amount: string; category: CategoryKey};
-
-// Receipt prices can have cents, so amounts are kept exact rather than rounded.
-const toAmount = (text: string) => {
-  const n = Number(text.replace(/,/g, '').trim());
-  return Number.isFinite(n) && n > 0 ? n : 0;
-};
 
 const nextCategory = (c: CategoryKey) =>
   CATEGORIES[(CATEGORIES.findIndex(x => x.key === c) + 1) % CATEGORIES.length].key;
@@ -193,6 +188,7 @@ export default function ResultScreen({receipt, onBack, onAdd}: Props) {
                     category: d.category,
                     amount: d.value,
                     note: d.name.trim() || receipt.merchant,
+                    date: receiptDate(receipt.date),
                   })),
                 )
               }

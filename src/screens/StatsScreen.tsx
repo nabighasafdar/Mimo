@@ -1,6 +1,8 @@
 import React, {useMemo, useState} from 'react';
 import {ImageBackground, Pressable, ScrollView, StatusBar, StyleSheet, Text, View} from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
+import {useNavigation} from '@react-navigation/native';
+import {NativeStackNavigationProp} from '@react-navigation/native-stack';
 import {Deco} from '../components/Scrapbook';
 import {art} from '../art';
 import Svg, {Circle, Path} from 'react-native-svg';
@@ -11,6 +13,7 @@ import GlassCard from '../components/GlassCard';
 import Gradient from '../components/Gradient';
 import {budgetStatus, monthName, monthShort, monthStart, monthYear, sameMonth} from '../budget';
 import {CATEGORIES, CategoryKey} from '../categories';
+import {RootStackParamList} from '../navigation';
 import {useMoney, useStore} from '../store';
 import {formatAmount} from '../voiceParse';
 import {colors, fonts, spacing, textColors} from '../theme';
@@ -30,6 +33,7 @@ const sumOf = (xs: {amount: number}[]) => xs.reduce((s, x) => s + x.amount, 0);
 export default function StatsScreen() {
   const {expenses, budget, savingsGoal, today, prefs} = useStore();
   const money = useMoney();
+  const navigation = useNavigation<NativeStackNavigationProp<RootStackParamList>>();
   const [range, setRange] = useState<Range>('Month');
   const [offset, setOffset] = useState(0); // 0 = this month, -1 = last month, ...
 
@@ -250,6 +254,33 @@ export default function StatsScreen() {
           </View>
 
           {prefs.tips && <BunnySays size={40} text={tip} />}
+
+          {inMonth.length > 0 && (
+            <GlassCard>
+              <View style={styles.card}>
+                <Text style={styles.cardTitle}>Everything in {monthName(month)}</Text>
+                {[...inMonth]
+                  .sort((a, b) => b.date.localeCompare(a.date))
+                  .map(e => (
+                    <Pressable
+                      key={e.id}
+                      onPress={() => navigation.navigate('Expense', {id: e.id})}
+                      accessibilityHint="Tap to edit or delete"
+                      style={({pressed}) => [styles.item, pressed && styles.itemPressed]}>
+                      <Text style={styles.itemNote} numberOfLines={1}>
+                        {e.note}
+                      </Text>
+                      <Text style={styles.itemDate}>
+                        {new Date(e.date).toLocaleDateString('en-GB', {day: 'numeric', month: 'short'})}
+                      </Text>
+                      <Text style={styles.itemAmount} numberOfLines={1}>
+                        {money(e.amount)}
+                      </Text>
+                    </Pressable>
+                  ))}
+              </View>
+            </GlassCard>
+          )}
         </ScrollView>
 
         <View style={styles.nav}>
@@ -334,4 +365,9 @@ const styles = StyleSheet.create({
   bar: {width: 30, maxWidth: '100%', borderTopLeftRadius: 10, borderTopRightRadius: 10, borderBottomLeftRadius: 4, borderBottomRightRadius: 4, overflow: 'hidden', backgroundColor: colors.orange},
   barSoft: {...StyleSheet.absoluteFill, backgroundColor: '#DCC2A0'},
   blabel: {color: colors.textSoft, fontFamily: fonts.hand, fontSize: 17},
+  item: {height: 46, flexDirection: 'row', alignItems: 'center', gap: 10, borderBottomWidth: 1, borderBottomColor: colors.dashed},
+  itemPressed: {backgroundColor: 'rgba(217,190,150,0.2)'},
+  itemNote: {flex: 1, color: colors.text, fontFamily: fonts.extraBold, fontSize: 13},
+  itemDate: {color: colors.textSoft, fontFamily: fonts.bold, fontSize: 13},
+  itemAmount: {maxWidth: 110, color: colors.text, fontFamily: fonts.black, fontSize: 13},
 });
