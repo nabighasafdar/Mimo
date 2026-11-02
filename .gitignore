@@ -5,6 +5,8 @@ node_modules/
 # Android
 android/build/
 android/app/build/
+android/app/.cxx/
+android/.kotlin/
 android/.gradle/
 android/local.properties
 *.apk
@@ -23,3 +25,7 @@ vendor/
 # Metro / misc
 .metro-health-check*
 .expo/
+
+# Release signing: never commit
+keystore.properties
+mimo-release.keystore
