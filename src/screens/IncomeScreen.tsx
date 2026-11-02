@@ -23,6 +23,8 @@ import {colors, fonts, spacing, textColors} from '../theme';
 type Props = {
   initialPicked?: string;
   initialAmount?: string;
+  /** Currency code shown beside the amount, e.g. 'EUR'. */
+  currencyCode?: string;
   onBack?: () => void;
   onContinue?: (income: string, amount: string) => void;
 };
@@ -96,6 +98,7 @@ const OPTIONS: Option[] = [
 export default function IncomeScreen({
   initialPicked = 'salary',
   initialAmount = '50,000',
+  currencyCode = 'PKR',
   onBack,
   onContinue,
 }: Props) {
@@ -140,7 +143,7 @@ export default function IncomeScreen({
               <Text style={styles.label}>How much do you get each month?</Text>
               <View style={styles.amountRow}>
                 <GlassCard style={styles.cur} contentStyle={styles.curContent}>
-                  <Text style={styles.curText}>PKR</Text>
+                  <Text style={styles.curText}>{currencyCode}</Text>
                 </GlassCard>
                 <GlassCard style={styles.flex} contentStyle={styles.inputContent}>
                   <TextInput

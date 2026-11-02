@@ -103,6 +103,7 @@ function Income({navigation, route}: Props<'Income'>) {
     <IncomeScreen
       initialPicked={profile.incomeType}
       initialAmount={profile.amount}
+      currencyCode={profile.currency.code}
       onBack={() => navigation.goBack()}
       onContinue={(incomeType, amount) => {
         setProfile({incomeType, amount});
