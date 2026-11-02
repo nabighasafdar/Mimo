@@ -61,7 +61,7 @@ export default function BottomNav({active}: {active: Tab}) {
         <Svg width={21} height={21} viewBox="0 0 24 24" fill="none">
           {ICONS[name](color)}
         </Svg>
-        <Text style={[styles.label, {color}]} numberOfLines={1}>
+        <Text style={[styles.label, {color}]} numberOfLines={1} adjustsFontSizeToFit>
           {LABELS[name]}
         </Text>
       </Pressable>
@@ -118,8 +118,7 @@ const styles = StyleSheet.create({
     backgroundColor: colors.card,
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'space-around',
-    paddingHorizontal: 6,
+    paddingHorizontal: 8,
   },
   stitch: {
     position: 'absolute',
@@ -132,7 +131,8 @@ const styles = StyleSheet.create({
     borderStyle: 'dashed',
     borderColor: '#DCC6A2',
   },
-  item: {width: 62, alignItems: 'center', gap: 2, paddingTop: 6, paddingBottom: 4, borderRadius: 16},
+  // Tabs share the space left by the Scan button, so the bar fits any phone width.
+  item: {flex: 1, minWidth: 0, alignItems: 'center', gap: 2, paddingTop: 6, paddingBottom: 4, borderRadius: 16},
   itemOn: {backgroundColor: 'rgba(217,190,150,0.38)'},
   label: {fontFamily: fonts.extraBold, fontSize: 10.5},
   scanRing: {
