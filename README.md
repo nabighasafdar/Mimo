@@ -1,28 +1,45 @@
-<div align="center">
-
-<img src="docs/assets/mimo.png" alt="Mimo logo" width="96" />
-
 # Mimo
 
-**A cosy, voice-first budget journal for Android.**
-*"I'll help you keep track of your money, one tiny carrot at a time."*
+<table>
+  <tr>
+    <td width="66%" valign="middle">
+      <h3>A cosy, voice-first budget journal for Android.</h3>
+      <p><i>"I'll help you keep track of your money, one tiny carrot at a time."</i></p>
+      <p>
+        Say what you spent, snap a receipt or type it in. Mimo sorts it into your budget, keeps
+        your savings goal safe and warns you before you overspend.
+      </p>
+      <p>
+        <a href="https://mimo-virid.vercel.app"><b>Download the APK</b></a> ·
+        <a href="#demo">Watch the demo</a> ·
+        <a href="https://mimo-virid.vercel.app/privacy">Privacy policy</a>
+      </p>
+      <p>
+        <img src="https://img.shields.io/badge/platform-Android%207%2B-8F4A30" alt="Platform: Android 7+" />
+        <img src="https://img.shields.io/badge/React%20Native-0.87-6B5446" alt="React Native 0.87" />
+        <img src="https://img.shields.io/badge/TypeScript-6-A27F45" alt="TypeScript 6" />
+        <img src="https://img.shields.io/badge/backend-Supabase-8A9470" alt="Backend: Supabase" />
+        <img src="https://img.shields.io/badge/AI-Google%20Gemini-C48A2E" alt="AI: Google Gemini" />
+      </p>
+    </td>
+    <td width="34%" align="center" valign="middle">
+      <img src="docs/assets/mimo.png" alt="Mimo the bunny" width="220" />
+    </td>
+  </tr>
+</table>
 
-Say what you spent, snap a receipt or type it in. Mimo sorts it into your budget, keeps your
-savings goal safe and warns you before you overspend.
+## Demo
 
-[**Download the APK**](https://mimo-virid.vercel.app) ·
-[Watch the demo](mimo_image_video/Full_video.mp4) ·
-[Privacy policy](https://mimo-virid.vercel.app/privacy)
-
-![Platform](https://img.shields.io/badge/platform-Android%207%2B-8F4A30)
-![React Native](https://img.shields.io/badge/React%20Native-0.87-6B5446)
-![TypeScript](https://img.shields.io/badge/TypeScript-6-A27F45)
-![Supabase](https://img.shields.io/badge/backend-Supabase-8A9470)
-![Gemini](https://img.shields.io/badge/AI-Google%20Gemini-C48A2E)
-
+<div align="center">
+  <a href="mimo_image_video/Full_video.mp4">
+    <img src="mimo_image_video/demo.gif" width="380" alt="Mimo walkthrough: onboarding, adding expenses, savings, voice, stats, bucket list and settings" />
+  </a>
+  <p>
+    Onboarding, adding an expense, setting a savings goal, logging spending by voice, stats,
+    the bucket list and settings, at 3× speed.<br />
+    <a href="mimo_image_video/Full_video.mp4"><b>▶ Watch the full video (1:54)</b></a>
+  </p>
 </div>
-
----
 
 ## Screenshots
 
@@ -36,27 +53,6 @@ savings goal safe and warns you before you overspend.
     <td align="center"><img src="mimo_image_video/image3.jpeg" width="200" alt="Receipt scanner" /><br /><b>Scan a receipt</b></td>
     <td align="center"><img src="mimo_image_video/image2.jpeg" width="200" alt="Bucket list" /><br /><b>Bucket list</b></td>
     <td align="center"><img src="mimo_image_video/image4.jpeg" width="200" alt="Me / profile screen" /><br /><b>Me</b></td>
-  </tr>
-</table>
-
-## Demo
-
-<table>
-  <tr>
-    <td width="280">
-      <a href="mimo_image_video/Full_video.mp4"><img src="mimo_image_video/demo-voice.gif" width="260" alt="Logging an expense by voice" /></a>
-    </td>
-    <td>
-      <b>Logging an expense by voice</b>
-      <ol>
-        <li>Tap the mic on Home and say <i>"I spent $5 on transportation"</i>.</li>
-        <li>Mimo shows the words live while you speak.</li>
-        <li>The AI turns the sentence into an expense with a name, amount and category.</li>
-        <li>You check it, tap <b>Add</b>, and the Home card and Stats update immediately.</li>
-      </ol>
-      <a href="mimo_image_video/Full_video.mp4"><b>▶ Watch the full walkthrough (1:54)</b></a>.
-      It covers sign-up, onboarding, adding expenses, savings, voice, stats, the bucket list and settings.
-    </td>
   </tr>
 </table>
 
