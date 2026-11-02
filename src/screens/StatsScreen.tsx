@@ -10,7 +10,6 @@ import Blobs from '../components/Blobs';
 import BottomNav from '../components/BottomNav';
 import BunnySays from '../components/BunnySays';
 import GlassCard from '../components/GlassCard';
-import Gradient from '../components/Gradient';
 import {budgetStatus, monthName, monthShort, monthStart, monthYear, sameMonth} from '../budget';
 import {CATEGORIES, CategoryKey} from '../categories';
 import {RootStackParamList} from '../navigation';
@@ -158,17 +157,13 @@ export default function StatsScreen() {
             <View style={styles.tabs}>
               {RANGES.map(r => (
                 <Pressable key={r} onPress={() => setRange(r)} style={styles.tabWrap}>
-                  <View style={[styles.tab, range === r && styles.tabOn]}>
-                    {range === r && (
-                      <Gradient
-                        id="tabFill"
-                        stops={[
-                          {offset: 0, color: '#9E5539'},
-                          {offset: 1, color: '#9E5539'},
-                        ]}
-                      />
-                    )}
-                    <Text style={[styles.tabText, range === r && styles.tabTextOn]}>{r}</Text>
+                  {/* The pill is its own view, added only when selected. Toggling a background and
+                      clipping on one view left Android drawing square corners and blank labels. */}
+                  <View style={styles.tab}>
+                    {range === r && <View style={styles.tabOn} />}
+                    <Text style={[styles.tabText, range === r ? styles.tabTextOn : styles.tabTextOff]}>
+                      {r}
+                    </Text>
                   </View>
                 </Pressable>
               ))}
@@ -232,15 +227,6 @@ export default function StatsScreen() {
                     <View key={b.label} style={styles.bcol}>
                       <Text style={[styles.bval, isMax && {color: '#8F4A30'}]}>{formatAmount(b.value)}</Text>
                       <View style={[styles.bar, {height: Math.max(8, (b.value / max) * CHART_HEIGHT)}]}>
-                        {isMax && (
-                          <Gradient
-                            id="barFill"
-                            stops={[
-                              {offset: 0, color: '#9E5539'},
-                              {offset: 1, color: '#9E5539'},
-                            ]}
-                          />
-                        )}
                         {!isMax && <View style={styles.barSoft} />}
                       </View>
                       <Text style={styles.blabel}>{b.label}</Text>
@@ -338,10 +324,17 @@ const styles = StyleSheet.create({
   scroll: {paddingTop: 18, paddingBottom: 56, paddingHorizontal: spacing.screenX, gap: 16},
   tabs: {height: 43, flexDirection: 'row', padding: 4, gap: 4},
   tabWrap: {flex: 1},
-  tab: {flex: 1, borderRadius: 18, overflow: 'hidden', alignItems: 'center', justifyContent: 'center'},
-  tabOn: {backgroundColor: colors.orange, borderBottomWidth: 2, borderBottomColor: colors.accentShadow},
-  tabText: {color: textColors.subtitle, fontFamily: fonts.extraBold, fontSize: 13},
+  tab: {flex: 1, alignItems: 'center', justifyContent: 'center'},
+  tabOn: {
+    ...StyleSheet.absoluteFill,
+    borderRadius: 18,
+    backgroundColor: colors.orange,
+    borderBottomWidth: 2,
+    borderBottomColor: colors.accentShadow,
+  },
+  tabText: {fontFamily: fonts.extraBold, fontSize: 13},
   tabTextOn: {color: colors.onAccent},
+  tabTextOff: {color: textColors.subtitle},
   card: {padding: 18},
   cardHead: {flexDirection: 'row', justifyContent: 'space-between', alignItems: 'baseline'},
   cardTitle: {color: colors.text, fontFamily: fonts.serif, fontSize: 17},
