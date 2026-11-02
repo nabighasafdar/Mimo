@@ -1,52 +1,59 @@
 import React from 'react';
-import {Pressable, StyleSheet, Text} from 'react-native';
-import Gradient from './Gradient';
+import {Pressable, StyleSheet, Text, View} from 'react-native';
 import {colors, fonts, radii} from '../theme';
 
-type Props = {label: string; onPress?: () => void};
+type Props = {label: string; onPress?: () => void; icon?: React.ReactNode; disabled?: boolean};
 
-// Orange gradient pill with a bevel approximated by top/bottom gradient stops.
-export default function PrimaryButton({label, onPress}: Props) {
+// Terracotta pill with a darker ledge underneath and a stitched (dashed) inner edge.
+export default function PrimaryButton({label, onPress, icon, disabled}: Props) {
   return (
     <Pressable
       onPress={onPress}
-      style={({pressed}) => [styles.button, pressed && styles.pressed]}>
-      <Gradient
-        id="btnFill"
-        stops={[
-          {offset: 0, color: '#F7AE6E'},
-          {offset: 1, color: '#DD6E2B'},
-        ]}
-      />
-      <Gradient
-        id="btnBevel"
-        stops={[
-          {offset: 0, color: '#FFFFFF', opacity: 0.4},
-          {offset: 0.1, color: '#FFFFFF', opacity: 0},
-          {offset: 0.85, color: '#8C380A', opacity: 0},
-          {offset: 1, color: '#8C380A', opacity: 0.35},
-        ]}
-      />
-      <Text style={styles.label}>{label}</Text>
+      disabled={disabled}
+      accessibilityRole="button"
+      accessibilityState={{disabled}}
+      style={({pressed}) => [styles.ledge, (pressed || disabled) && styles.pressed]}>
+      <View style={styles.button}>
+        <View style={styles.stitch} pointerEvents="none" />
+        {icon}
+        <Text style={styles.label}>{label}</Text>
+      </View>
     </Pressable>
   );
 }
 
 const styles = StyleSheet.create({
-  button: {
+  ledge: {
     width: '100%',
-    paddingVertical: 18,
-    paddingHorizontal: 24,
     borderRadius: radii.pill,
-    overflow: 'hidden',
+    paddingBottom: 4,
+    backgroundColor: colors.accentShadow,
+    shadowColor: colors.accentShadow,
+    shadowOpacity: 0.25,
+    shadowRadius: 12,
+    shadowOffset: {width: 0, height: 10},
+    elevation: 6,
+  },
+  button: {
+    height: 56,
+    borderRadius: radii.pill,
+    flexDirection: 'row',
+    gap: 10,
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: colors.buttonBottom,
+    backgroundColor: colors.orange,
   },
-  pressed: {opacity: 0.9, transform: [{scale: 0.98}]},
-  label: {
-    color: colors.white,
-    fontFamily: fonts.bold,
-    fontSize: 17,
+  stitch: {
+    position: 'absolute',
+    left: 6,
+    right: 6,
+    top: 6,
+    bottom: 6,
+    borderRadius: radii.pill - 6,
+    borderWidth: 1.5,
+    borderStyle: 'dashed',
+    borderColor: 'rgba(255,236,214,0.6)',
   },
+  pressed: {opacity: 0.88, transform: [{translateY: 2}]},
+  label: {color: colors.onAccent, fontFamily: fonts.extraBold, fontSize: 15, letterSpacing: 0.2},
 });

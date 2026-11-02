@@ -1,36 +1,51 @@
+// Mimo's scrapbook palette (design canvas "Mimo Budget App"): cream paper, cocoa ink,
+// a terracotta accent and sage for good news.
 export const colors = {
-  background: '#F5EDE0',
-  text: '#4A3428',
-  textMuted: '#9A8272',
+  background: '#F2E8D5',
+  text: '#4A3426',
+  textSoft: '#5B4232',
+  textMuted: '#735A49',
   white: '#FFFFFF',
-  orange: '#E2813C',
-  progressTrack: '#E6D6C2',
-  glassFill: 'rgba(255,255,255,0.55)',
-  glassBorder: 'rgba(255,255,255,0.85)',
-  glassShadow: 'rgba(107,71,41,0.16)',
-  glassInnerHighlight: 'rgba(255,255,255,0.95)',
-  glassInnerShade: 'rgba(115,77,46,0.08)',
-  buttonTop: '#F7AE6E',
-  buttonBottom: '#DD6E2B',
-  buttonShadow: 'rgba(217,102,31,0.45)',
-  buttonInnerHighlight: 'rgba(255,255,255,0.6)',
-  buttonInnerShade: 'rgba(140,56,10,0.4)',
-  blobBlush: '#F4C9A5',
-  blobOrange: '#F5C9A0',
-  blobButter: '#F7E3A6',
-  blobSage: '#D5E0C6',
+  // Terracotta accent (buttons, active tab, progress fill).
+  orange: '#9E5539',
+  accentText: '#8F4A30',
+  accentShadow: '#74392A',
+  onAccent: '#FFF8EE',
+  card: '#FBF6EC',
+  cardBorder: '#E2CFAE',
+  tan: '#D9BE96',
+  dashed: '#DCC8A8',
+  paper: '#E8D6B6',
+  input: '#FFFDF8',
+  sage: '#6F7A55',
+  sageSoft: '#E8EBDD',
+  sageText: '#3F4A2C',
+  progressTrack: '#DCC8A8',
+  // Kept for components that still read the older names.
+  glassFill: '#FBF6EC',
+  glassBorder: '#E2CFAE',
+  buttonTop: '#9E5539',
+  buttonBottom: '#9E5539',
 };
 
 export const fonts = {
   semiBold: 'Nunito-SemiBold',
   bold: 'Nunito-Bold',
   extraBold: 'Nunito-ExtraBold',
+  black: 'Nunito-Black',
+  /** Headings and big numbers. */
+  serif: 'Fraunces-SemiBold',
+  serifBold: 'Fraunces-Bold',
+  serifItalic: 'Fraunces-MediumItalic',
+  /** Mimo's handwriting: speech bubbles, notes, small asides. */
+  hand: 'Caveat-SemiBold',
+  handBold: 'Caveat-Bold',
 };
 
 export const radii = {
   pill: 28,
-  card: 22,
-  back: 20,
+  card: 14,
+  back: 19,
   progress: 3,
 };
 
@@ -41,6 +56,6 @@ export const spacing = {
 };
 
 export const textColors = {
-  subtitle: '#9A8272',
-  secondaryButton: '#7A4E34',
+  subtitle: '#735A49',
+  secondaryButton: '#5B4232',
 };

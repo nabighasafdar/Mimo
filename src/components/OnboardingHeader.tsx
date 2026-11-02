@@ -1,48 +1,38 @@
 import React from 'react';
-import {Pressable, StyleSheet, View} from 'react-native';
-import Svg, {Path} from 'react-native-svg';
-import GlassCard from './GlassCard';
+import {StyleSheet, View} from 'react-native';
+import BackButton from './BackButton';
 import {colors, radii} from '../theme';
 
 type Props = {step: number; total?: number; onBack?: () => void};
 
-// Back button plus segmented progress bar shown on the onboarding screens.
+// Back button plus the onboarding progress: filled steps in terracotta, the rest as
+// stitched (dashed) thread.
 export default function OnboardingHeader({step, total = 4, onBack}: Props) {
   return (
     <View style={styles.row}>
-      <Pressable onPress={onBack} hitSlop={8}>
-        <GlassCard radius={radii.back} style={styles.back} contentStyle={styles.backContent}>
-          <Svg width={20} height={20} viewBox="0 0 24 24">
-            <Path
-              d="M15 18l-6-6 6-6"
-              stroke={colors.text}
-              strokeWidth={2.2}
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              fill="none"
-            />
-          </Svg>
-        </GlassCard>
-      </Pressable>
+      <BackButton onPress={onBack} />
       <View style={styles.progress}>
-        {Array.from({length: total}, (_, i) => (
-          <View
-            key={i}
-            style={[
-              styles.step,
-              {backgroundColor: i < step ? colors.orange : colors.progressTrack},
-            ]}
-          />
-        ))}
+        {Array.from({length: total}, (_, i) =>
+          i < step ? (
+            <View key={i} style={[styles.step, styles.done]} />
+          ) : (
+            <View key={i} style={[styles.step, styles.todo]}>
+              {Array.from({length: 12}, (__, j) => (
+                <View key={j} style={styles.dash} />
+              ))}
+            </View>
+          ),
+        )}
       </View>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
-  row: {flexDirection: 'row', alignItems: 'center', gap: 14},
-  back: {width: 40, height: 40},
-  backContent: {width: 37, height: 37, alignItems: 'center', justifyContent: 'center'},
-  progress: {flex: 1, flexDirection: 'row', gap: 6},
-  step: {flex: 1, height: 6, borderRadius: radii.progress},
+  row: {flexDirection: 'row', alignItems: 'center', gap: 16},
+  progress: {flex: 1, flexDirection: 'row', gap: 8},
+  step: {flex: 1, height: 5, borderRadius: radii.progress, overflow: 'hidden'},
+  done: {backgroundColor: colors.orange},
+  todo: {flexDirection: 'row', gap: 4},
+  dash: {width: 6, height: 5, borderRadius: 3, backgroundColor: '#D3BE9B'},
 });

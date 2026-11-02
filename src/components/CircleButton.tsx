@@ -33,8 +33,8 @@ export default function CircleButton({kind, onPress, size = 62}: Props) {
           <Gradient
             id="circleFill"
             stops={[
-              {offset: 0, color: '#F7AE6E'},
-              {offset: 1, color: '#DD6E2B'},
+              {offset: 0, color: '#9E5539'},
+              {offset: 1, color: '#9E5539'},
             ]}
           />
           {icon}
