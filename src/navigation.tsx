@@ -2,7 +2,7 @@ import React from 'react';
 import {Alert} from 'react-native';
 import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator, NativeStackScreenProps} from '@react-navigation/native-stack';
-import {ParsedExpense, parseExpenses} from './voiceParse';
+import {formatAmount, ParsedExpense, parseExpenses} from './voiceParse';
 import {Receipt, readSpoken} from './receipt';
 import {signOutOfGoogle} from './googleAuth';
 import {sameMonth, spendingAlert} from './budget';
@@ -106,7 +106,9 @@ function Income({navigation, route}: Props<'Income'>) {
       currencyCode={profile.currency.code}
       onBack={() => navigation.goBack()}
       onContinue={(incomeType, amount) => {
-        setProfile({incomeType, amount});
+        // Saved as typed ("80000"), so tidy it into "80,000" for Home and Me.
+        const value = parseInt(amount.replace(/\D/g, ''), 10);
+        setProfile({incomeType, amount: value > 0 ? formatAmount(value) : ''});
         if (edit) {
           navigation.popTo('Me');
         } else {
