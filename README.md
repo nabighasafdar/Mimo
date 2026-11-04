@@ -23,7 +23,7 @@
       </p>
     </td>
     <td width="34%" align="center" valign="middle">
-      <img src="docs/assets/mimo.png" alt="Mimo the bunny" width="220" />
+      <img src="mimo_image_video/app_icon.png" alt="Mimo app icon" width="120" />
     </td>
   </tr>
 </table>
