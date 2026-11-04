@@ -9,21 +9,9 @@
         Say what you spent, snap a receipt or type it in. Mimo sorts it into your budget, keeps
         your savings goal safe and warns you before you overspend.
       </p>
-      <p>
-        <a href="https://mimo-virid.vercel.app"><b>Download the APK</b></a> ·
-        <a href="#demo">Watch the demo</a> ·
-        <a href="https://mimo-virid.vercel.app/privacy">Privacy policy</a>
-      </p>
-      <p>
-        <img src="https://img.shields.io/badge/platform-Android%207%2B-8F4A30" alt="Platform: Android 7+" />
-        <img src="https://img.shields.io/badge/React%20Native-0.87-6B5446" alt="React Native 0.87" />
-        <img src="https://img.shields.io/badge/TypeScript-6-A27F45" alt="TypeScript 6" />
-        <img src="https://img.shields.io/badge/backend-Supabase-8A9470" alt="Backend: Supabase" />
-        <img src="https://img.shields.io/badge/AI-Google%20Gemini-C48A2E" alt="AI: Google Gemini" />
-      </p>
     </td>
     <td width="34%" align="center" valign="middle">
-      <img src="mimo_image_video/app_icon.png" alt="Mimo app icon" width="120" />
+      <img src="mimo_image_video/app_icon.png" alt="Mimo app icon" width="160" />
     </td>
   </tr>
 </table>
