@@ -34,33 +34,72 @@
   </a>
 </p>
 
+## What is Mimo?
+
+Mimo is a budget app for Android with a little bunny who listens. You tell it what you spent,
+by voice, by photo of a receipt or by typing, and it adds the expense to your monthly budget for you.
+You pick how much you want to save each month, and Mimo warns you before your spending eats into it.
+
+### The problem it solves
+
+Most people stop tracking their spending after a week or two. Budget apps feel like
+spreadsheets: every coffee means opening the app, choosing a category, typing an amount and a
+date. It's tedious, so people give up, and at the end of the month they don't know where the
+money went or why there's nothing left to save.
+
+### Why Mimo is different
+
+- **Talk, don't type.** Say *"450 on lunch and 200 on a rickshaw"* and Mimo logs both items in one go,
+  in English, Urdu or Roman Urdu.
+- **Savings come first.** Mimo takes your savings goal out of your income before anything else, so
+  the number on the Home screen is what you can *actually* spend.
+- **Warnings before it's too late.** You're told at 80% of your spending money, not after the month is over.
+- **Made for local life.** Roman Urdu, rickshaws and PKR are first class, and 34 currencies are supported.
+- **Cosy, not clinical.** Every screen looks like a page from a hand-made scrapbook, so opening the app
+  feels nice rather than like homework.
+- **You stay in control.** Every AI reading is shown to you first. Nothing is saved until you confirm it.
+
 ## Demo
 
-<div align="center">
+<p align="center">
   <a href="mimo_image_video/Full_video.mp4">
-    <img src="mimo_image_video/demo.gif" width="260" alt="Mimo walkthrough: onboarding, adding expenses, savings, voice, stats, bucket list and settings" />
+    <img src="mimo_image_video/demo.gif" width="240" alt="Mimo walkthrough: onboarding, adding expenses, savings, voice, stats, bucket list and settings" />
   </a>
-  <p>
-    Onboarding, adding an expense, setting a savings goal, logging spending by voice, stats,
-    the bucket list and settings, at 3× speed.<br />
-    <a href="mimo_image_video/Full_video.mp4"><b>▶ Watch the full video (1:54)</b></a>
-  </p>
-</div>
+  <br />
+  Onboarding, adding an expense, savings, voice, stats, the bucket list and settings, at 3× speed.<br />
+  <a href="mimo_image_video/Full_video.mp4"><b>▶ Watch the full video (1:54)</b></a>
+</p>
+
+## Modules
+
+| | Module | What it does |
+|---|---|---|
+| 🎙️ | **Voice** | Speak naturally and Mimo splits the sentence into separate expenses, each with an amount and category. |
+| 🧾 | **Receipt scanner** | Take a photo or pick one from the gallery. Mimo reads the shop, every line item and the total. |
+| ⌨️ | **Manual entry** | A quick form with amount, note, category and date for when you can't talk. |
+| 💰 | **Budget** | *Income − savings goal = what you can spend.* The Home card shows what's left this month. |
+| 🔔 | **Alerts** | A warning at **80%** of your spending money, and another when spending starts eating into savings. |
+| 📊 | **Stats** | Week, month and year views with a category donut, spending by week, and every item listed to edit or delete. |
+| 🎯 | **Bucket list** | Savings goals with a price and a deadline. Mimo works out how much to put aside each month. |
+| 👤 | **Me** | Profile, income, savings goal and currency (34 to choose from), plus sign-out and account deletion. |
+| 📴 | **Offline sync** | Every change is saved on the phone first and synced when you're back online. |
+| 🔐 | **Accounts** | Email and password or Google Sign-In, with password reset. |
 
 ## Screenshots
 
-<table>
-  <tr>
-    <td align="center"><img src="mimo_image_video/image1.jpeg" width="200" alt="Welcome screen" /><br /><b>Welcome</b></td>
-    <td align="center"><img src="mimo_image_video/image5.jpeg" width="200" alt="Home screen" /><br /><b>Home</b></td>
-    <td align="center"><img src="mimo_image_video/image6.jpeg" width="200" alt="Stats screen" /><br /><b>Stats</b></td>
-  </tr>
-  <tr>
-    <td align="center"><img src="mimo_image_video/image3.jpeg" width="200" alt="Receipt scanner" /><br /><b>Scan a receipt</b></td>
-    <td align="center"><img src="mimo_image_video/image2.jpeg" width="200" alt="Bucket list" /><br /><b>Bucket list</b></td>
-    <td align="center"><img src="mimo_image_video/image4.jpeg" width="200" alt="Me / profile screen" /><br /><b>Me</b></td>
-  </tr>
-</table>
+<p align="center">
+  <img src="mimo_image_video/image1.jpeg" width="32%" alt="Welcome screen" />
+  <img src="mimo_image_video/image5.jpeg" width="32%" alt="Home screen" />
+  <img src="mimo_image_video/image6.jpeg" width="32%" alt="Stats screen" />
+</p>
+<p align="center">
+  <img src="mimo_image_video/image3.jpeg" width="32%" alt="Receipt scanner" />
+  <img src="mimo_image_video/image2.jpeg" width="32%" alt="Bucket list" />
+  <img src="mimo_image_video/image4.jpeg" width="32%" alt="Me / profile screen" />
+</p>
+<p align="center">
+  <i>Welcome · Home · Stats · Scan a receipt · Bucket list · Me</i>
+</p>
 
 ## Website
 
@@ -68,69 +107,22 @@ Mimo isn't on the Play Store. It's downloaded as an APK from its own landing pag
 [mimo-virid.vercel.app](https://mimo-virid.vercel.app), built with Next.js in a separate repo,
 [Mimo_Landing](https://github.com/nabighasafdar/Mimo_Landing).
 
-<table>
-  <tr>
-    <td align="center" width="50%">
-      <img src="mimo_image_video/landing_peek.jpg" alt="Landing page: Every page is a little scrapbook, showing the voice, bucket list and stats screens" /><br />
-      <b>A peek inside the app</b>
-    </td>
-    <td align="center" width="50%">
-      <img src="mimo_image_video/landing_download.jpg" alt="Landing page download section: Android APK available, iPhone coming later" /><br />
-      <b>Download the APK</b>
-    </td>
-  </tr>
-</table>
-
-## What Mimo does
-
-| | Feature | Details |
-|---|---|---|
-| 🎙️ | **Tell Mimo what you spent** | Speak naturally, e.g. *"450 on lunch and 200 on a rickshaw"*. Several items in one sentence, in English, Urdu or Roman Urdu. |
-| 🧾 | **Scan a receipt** | Take a photo or pick one from the gallery. Mimo reads the shop, every line item and the total. |
-| ⌨️ | **Type it instead** | A quick form with amount, note, category and date for when you can't talk. |
-| 💰 | **Monthly budget** | *Income − savings goal = what you can spend.* The Home card shows what's left this month. |
-| 🔔 | **Savings alerts** | A warning at **80%** of your spending money, and another when spending starts eating into savings. |
-| 📊 | **Stats** | Week, month and year views with a category donut, a spending-by-day/week chart, and every item listed so you can edit or delete it. |
-| 🎯 | **Bucket list** | Savings goals with a price and a deadline. Mimo works out how much to put aside each month. |
-| 🌍 | **34 currencies** | PKR, EUR, USD, GBP, AED and more. Change it any time from **Me**. |
-| 📴 | **Works offline** | Every change is saved on the phone first and synced when you're back online. |
-| 🔐 | **Accounts** | Email and password or Google Sign-In, password reset, and full account deletion from the app. |
-
-Every AI reading is shown to you first. Nothing is saved until you confirm it.
+<p align="center">
+  <img src="mimo_image_video/landing_peek.jpg" width="49%" alt="Landing page: Every page is a little scrapbook" />
+  <img src="mimo_image_video/landing_download.jpg" width="49%" alt="Landing page download section: Android available, iPhone coming later" />
+</p>
 
 ## How it works
 
-```mermaid
-flowchart LR
-    subgraph Phone["📱 Android app (React Native)"]
-        UI[Screens] --> Store[store.tsx<br/>app state + offline copy]
-        Store --> Outbox[outbox.ts<br/>queued changes]
-        Mic[SpeechModule.kt<br/>Android SpeechRecognizer] --> UI
-        Cam[Camera / gallery] --> UI
-        Parser[voiceParse.ts<br/>on-device fallback]
-    end
+<p align="center">
+  <img src="mimo_image_video/how_it_works.svg" width="100%" alt="You speak, snap or type, the Mimo app sends it to Supabase, Supabase asks Gemini AI to read it, and the expense comes back sorted into your budget" />
+</p>
 
-    subgraph Supabase["☁️ Supabase"]
-        Auth[Auth<br/>email + Google]
-        DB[(Postgres<br/>profiles · expenses · goals<br/>row level security)]
-        Fn[Edge Function<br/>read-receipt]
-    end
-
-    Gemini[✨ Google Gemini]
-
-    Outbox -->|sync when online| DB
-    UI --> Auth
-    UI -->|photo or spoken text| Fn
-    Fn -->|daily quota check| DB
-    Fn --> Gemini
-    Fn -.->|busy or offline| Parser
-```
-
-- **Voice:** Android's built-in speech recognition turns your voice into text on the phone. Only the text is sent to the AI, never a recording.
-- **AI reading:** the `read-receipt` Edge Function sends the photo or text to Gemini and asks for a fixed JSON shape, so the app can trust the result. If one Gemini model is busy it tries the next one. Each user gets **30 AI reads a day**, so the API bill stays under control.
-- **Fallback:** if the AI can't be reached, spoken entries are read on the phone with a keyword parser, and Mimo tells you it guessed.
-- **Offline first:** changes go into an outbox on the phone and are sent to Supabase in order once there is a connection.
-- **Security:** row level security means each signed-in user can only read and change their own rows. The Gemini key lives only on the server.
+1. **You** say what you spent, snap a receipt or type it in.
+2. **The Mimo app** saves everything on the phone first, so it works without internet.
+3. **Supabase** handles login and stores your data. Each user can only see their own rows.
+4. **Gemini AI** reads the receipt photo or spoken text and returns the items and amounts.
+   Only text is sent, never a voice recording. If the AI can't be reached, the phone makes its own guess.
 
 ## Tech stack
 
@@ -140,39 +132,13 @@ flowchart LR
 | Navigation | React Navigation native stack, with a custom bottom tab bar |
 | Graphics | `react-native-svg`, hand-drawn sticker art |
 | Backend | Supabase: Postgres, Auth, Edge Functions (Deno) |
-| AI | Google Gemini, called only from the Edge Function |
+| AI | Google Gemini, called only from the Edge Function (30 reads per user per day) |
 | Speech | Android `SpeechRecognizer`, wrapped in a Kotlin native module |
 | Sign-in | `@react-native-google-signin/google-signin` |
 | Tests | Jest |
-| Website | Landing page on Vercel ([Mimo_Landing](https://github.com/nabighasafdar/Mimo_Landing)); privacy, password reset and account deletion pages in `docs/` |
+| Website | Next.js on Vercel ([Mimo_Landing](https://github.com/nabighasafdar/Mimo_Landing)) |
 
 Mimo is Android-only for now. iOS isn't set up, and voice input uses an Android-only module.
-
-## Project layout
-
-```text
-App.tsx                     App entry: safe-area provider and navigation
-src/
-  navigation.tsx            Every screen and how they connect
-  screens/                  One file per screen (Home, Stats, Goals, Me, Voice, Scan, onboarding…)
-  components/               Shared UI: cards, stickers, torn paper, tab bar
-  store.tsx                 App state, loading, offline copy, currencies
-  outbox.ts                 Queue that syncs changes to the database
-  db.ts                     Reads and writes to Supabase
-  budget.ts                 Budget, alert levels and date maths
-  receipt.ts                Calls the AI for photos and spoken text
-  voiceParse.ts             On-device parser used when the AI is unavailable
-  speech.ts                 React hook around the native speech module
-  googleAuth.ts, auth.ts    Sign-in, sign-up and password reset
-  config.ts                 Public settings (Supabase URL, website URL…)
-android/…/SpeechModule.kt   Native Android speech recognition
-supabase/
-  schema.sql                Tables, row level security, triggers, account deletion, AI quota
-  functions/read-receipt/   Edge Function that talks to Gemini
-docs/                       Privacy policy, password reset and delete-account pages
-__tests__/                  Jest tests for budget maths, outbox, store and voice parser
-mimo_image_video/           Screenshots and demo video used in this README
-```
 
 ## Data model
 
