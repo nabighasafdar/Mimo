@@ -28,11 +28,17 @@
   </tr>
 </table>
 
+<p align="center">
+  <a href="https://mimo-virid.vercel.app">
+    <img src="mimo_image_video/landing_hero.jpg" width="100%" alt="Mimo landing page: Track your money, one tiny carrot at a time" />
+  </a>
+</p>
+
 ## Demo
 
 <div align="center">
   <a href="mimo_image_video/Full_video.mp4">
-    <img src="mimo_image_video/demo.gif" width="380" alt="Mimo walkthrough: onboarding, adding expenses, savings, voice, stats, bucket list and settings" />
+    <img src="mimo_image_video/demo.gif" width="260" alt="Mimo walkthrough: onboarding, adding expenses, savings, voice, stats, bucket list and settings" />
   </a>
   <p>
     Onboarding, adding an expense, setting a savings goal, logging spending by voice, stats,
@@ -53,6 +59,25 @@
     <td align="center"><img src="mimo_image_video/image3.jpeg" width="200" alt="Receipt scanner" /><br /><b>Scan a receipt</b></td>
     <td align="center"><img src="mimo_image_video/image2.jpeg" width="200" alt="Bucket list" /><br /><b>Bucket list</b></td>
     <td align="center"><img src="mimo_image_video/image4.jpeg" width="200" alt="Me / profile screen" /><br /><b>Me</b></td>
+  </tr>
+</table>
+
+## Website
+
+Mimo isn't on the Play Store. It's downloaded as an APK from its own landing page,
+[mimo-virid.vercel.app](https://mimo-virid.vercel.app), built with Next.js in a separate repo,
+[Mimo_Landing](https://github.com/nabighasafdar/Mimo_Landing).
+
+<table>
+  <tr>
+    <td align="center" width="50%">
+      <img src="mimo_image_video/landing_peek.jpg" alt="Landing page: Every page is a little scrapbook, showing the voice, bucket list and stats screens" /><br />
+      <b>A peek inside the app</b>
+    </td>
+    <td align="center" width="50%">
+      <img src="mimo_image_video/landing_download.jpg" alt="Landing page download section: Android APK available, iPhone coming later" /><br />
+      <b>Download the APK</b>
+    </td>
   </tr>
 </table>
 
